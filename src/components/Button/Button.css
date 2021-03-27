@@ -1,0 +1,25 @@
+.Button {
+    width: 6.4rem;
+    height: 6.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    font-size: 2.2rem;
+}
+
+.clear {
+    background-color: #CCCCCC;
+}
+
+.equals {
+    width: 15rem;
+    grid-column: 3 / span 2;
+    background-color: #FF9900;
+}
+
+.operator {
+    border: 1px solid #FF9900;
+}

@@ -1,0 +1,21 @@
+.Display {
+    width: 28rem;
+    height: 7rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
+}
+
+.operation {
+    font-size: 3rem;
+}
+
+.result {
+    font-size: 2rem;
+    color: #C5C5C5;
+}

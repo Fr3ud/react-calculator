@@ -1,11 +1,16 @@
 import React from 'react';
+
+import Display from '../Display';
+import Keyboard from '../Keyboard';
+
 import './App.css';
 
-export default class extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <p>Hello World!</p>
+        <Display />
+        <Keyboard />
       </div>
     );
   }
