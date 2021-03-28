@@ -8,7 +8,7 @@ const Keyboard = () => {
   return (
     <div className="Keyboard">
       <Button value="AC" />
-      <Button value="<" />
+      <Button value="⌫" />
       <Button value="%" />
       <Button value="/" />
       <Button value="7" />
