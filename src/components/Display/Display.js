@@ -2,11 +2,17 @@ import React from 'react';
 
 import './Display.css';
 
-const Display = ({ value }) => {
+const Display = ({ displayValue, resultValue }) => {
+  let classes = 'operation';
+
+  if (displayValue.length > 12) {
+    classes += ' font-s';
+  }
+
   return (
     <div className="Display">
-      <span className="operation">{value}</span>
-      <span className="result">7</span>
+      <span className={classes}>{displayValue}</span>
+      <span className="result">{resultValue}</span>
     </div>
   );
 };

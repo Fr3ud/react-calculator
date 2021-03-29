@@ -6,36 +6,132 @@ import Keyboard from '../Keyboard';
 import './App.css';
 
 const App = () => {
-  const [displayValue, setValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState('0');
+  const [resultValue, setResultValue] = useState('');
   const [memory, setMemory] = useState(null);
+  const [operator, setOperator] = useState(null);
+  const [equals, setEquals] = useState(false);
 
   const handleButtonClick = (buttonValue) => {
     switch (buttonValue) {
       case 'AC':
-        setValue(0);
+        // null
+        setDisplayValue('0');
+        setResultValue('');
         setMemory(null);
+        setOperator(null);
+        setEquals(false);
         return;
       case '%':
         const percents = memory || 100;
-        setValue(displayValue / percents);
+        setDisplayValue(displayValue / percents);
         return;
       case '+':
-      case '-':
-      case '*':
-      case '/':
-        setMemory(displayValue);
-        setValue(0);
+        if (operator) {
+          setOperator('+');
+          setMemory(parseFloat(resultValue));
+          setDisplayValue(`${resultValue} + `);
+          setResultValue('');
+          return;
+        }
+        setMemory(parseFloat(displayValue));
+        setDisplayValue(`${displayValue} + `);
+        setOperator('+');
         return;
+      case '-':
+        if (operator) {
+          setOperator('-');
+          setMemory(parseFloat(resultValue));
+          setDisplayValue(`${resultValue} - `);
+          setResultValue('');
+          return;
+        }
+        setMemory(parseFloat(displayValue));
+        setDisplayValue(`${displayValue} - `);
+        setOperator('-');
+        return;
+      case '*':
+        if (operator) {
+          setOperator('*');
+          setMemory(parseFloat(resultValue));
+          setDisplayValue(`${resultValue} * `);
+          setResultValue('');
+          return;
+        }
+        setMemory(parseFloat(displayValue));
+        setDisplayValue(`${displayValue} * `);
+        setOperator('*');
+        return;
+      case '/':
+        if (operator) {
+          setOperator('/');
+          setMemory(parseFloat(resultValue));
+          setDisplayValue(`${resultValue} / `);
+          setResultValue('');
+          return;
+        }
+        setMemory(parseFloat(displayValue));
+        setDisplayValue(`${displayValue} / `);
+        setOperator('/');
+        return;
+      case '=':
+        if (!operator) return;
+
+        setOperator(null);
+        setMemory(parseFloat(resultValue));
+        setDisplayValue(resultValue);
+        setResultValue('');
+        setEquals(true);
+        return;
+      default:
+        if (operator) {
+          const rightNum = `${displayValue}${buttonValue}`.split(' ').pop();
+          setDisplayValue(`${displayValue}${buttonValue}`);
+
+          switch (operator) {
+            case '+':
+              setResultValue((memory + parseFloat(rightNum)).toString());
+              return;
+            case '-':
+              setResultValue((memory - parseFloat(rightNum)).toString());
+              return;
+            case '*':
+              setResultValue((memory * parseFloat(rightNum)).toString());
+              return;
+            case '/':
+              if (parseFloat(rightNum) === 0) {
+                setDisplayValue('ERROR'); // clear state
+                return;
+              }
+
+              setResultValue((memory / parseFloat(rightNum)).toString());
+              return;
+          }
+
+          return;
+        } else {
+          // null
+          if (equals) {
+            setDisplayValue(buttonValue); // not zero
+            setResultValue('');
+            setMemory(null);
+            setOperator(null);
+            setEquals(false);
+            return;
+          }
+          setDisplayValue((displayValue) =>
+            parseFloat(displayValue + buttonValue).toString()
+          );
+        }
     }
 
-    setValue((displayValue) => parseFloat(displayValue + buttonValue));
     console.log('buttonValue', buttonValue);
     console.log(displayValue);
   };
 
   return (
     <div className="App">
-      <Display value={displayValue} />
+      <Display displayValue={displayValue} resultValue={resultValue} />
       <Keyboard onButtonClick={handleButtonClick} />
     </div>
   );

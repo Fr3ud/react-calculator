@@ -16,6 +16,11 @@
 }
 
 .result {
+    min-height: 23px;
     font-size: 2rem;
     color: #C5C5C5;
+}
+
+.operation.font-s {
+    font-size: 2.3rem;
 }
