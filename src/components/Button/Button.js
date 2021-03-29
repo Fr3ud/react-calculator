@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Button.css';
 
-const Button = ({ value }) => {
+const Button = ({ value, onButtonClick }) => {
   let classes = 'Button';
 
   if (value === 'AC') {
@@ -17,7 +17,11 @@ const Button = ({ value }) => {
     classes += ' operator';
   }
 
-  return <div className={classes}>{value}</div>;
+  return (
+    <div className={classes} onClick={() => onButtonClick(value)}>
+      {value}
+    </div>
+  );
 };
 
 export default Button;
