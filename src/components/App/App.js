@@ -4,19 +4,27 @@ import Display from '../Display';
 import Keyboard from '../Keyboard';
 
 import './App.css';
-import Button from '../Button';
 
 const App = () => {
-  const [value, setValue] = useState('0');
-  const handleButtonClick = (num) => {
-    console.log('num', num);
-    setValue((value) => parseFloat(value + num).toString());
-    console.log(value);
+  const [displayValue, setValue] = useState(0);
+  const [memory, setMemory] = useState(null);
+
+  const handleButtonClick = (buttonValue) => {
+    switch (buttonValue) {
+      case 'AC':
+        setValue(0);
+        setMemory(null);
+        return;
+    }
+
+    setValue((displayValue) => parseFloat(displayValue + buttonValue));
+    console.log('buttonValue', buttonValue);
+    console.log(displayValue);
   };
 
   return (
     <div className="App">
-      <Display value={value} />
+      <Display value={displayValue} />
       <Keyboard onButtonClick={handleButtonClick} />
     </div>
   );
