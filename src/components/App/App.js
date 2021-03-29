@@ -15,6 +15,10 @@ const App = () => {
         setValue(0);
         setMemory(null);
         return;
+      case '%':
+        const percents = memory || 100;
+        setValue(value / percents);
+        return;
     }
 
     setValue((displayValue) => parseFloat(displayValue + buttonValue));
