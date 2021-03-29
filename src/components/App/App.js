@@ -17,7 +17,14 @@ const App = () => {
         return;
       case '%':
         const percents = memory || 100;
-        setValue(value / percents);
+        setValue(displayValue / percents);
+        return;
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+        setMemory(displayValue);
+        setValue(0);
         return;
     }
 
