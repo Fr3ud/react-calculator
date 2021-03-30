@@ -9,6 +9,10 @@ const Display = ({ displayValue, resultValue }) => {
     classes += ' font-s';
   }
 
+  if (displayValue.length > 30) {
+    classes += ' font-xs';
+  }
+
   return (
     <div className="Display">
       <span className={classes}>{displayValue}</span>
