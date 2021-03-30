@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Display from '../Display';
 import Keyboard from '../Keyboard';
 import trimZeros from '../../utils/trimZeros';
+import getSecondOperand from '../../utils/getSecondOperand';
 
 import './App.css';
 
@@ -33,8 +34,6 @@ const App = () => {
     setDisplayValue(`${resultValue} ${operator} `);
     setResultValue('');
   };
-
-  const getSecondOperand = (value) => value.split(' ').pop();
 
   const handleButtonClick = (buttonValue) => {
     switch (buttonValue) {
