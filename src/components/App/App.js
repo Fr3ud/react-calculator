@@ -149,31 +149,31 @@ const App = () => {
 
       default:
         if (operator) {
-          const values = displayValue.split(' ');
-          const secondOperand = parseFloat(
-            getSecondOperand(values.pop() + buttonValue)
+          const displayValues = displayValue.split(' ');
+          const secondOperand = getSecondOperand(
+            displayValues.pop() + buttonValue
           );
-          values.push(secondOperand.toString());
-          setDisplayValue(values.join(' '));
+          displayValues.push(secondOperand.toString());
+          setDisplayValue(displayValues.join(' '));
 
           switch (operator) {
             case '+':
-              setResultValue((memory + secondOperand).toString());
+              setResultValue((memory + parseFloat(secondOperand)).toString());
               return;
             case '-':
-              setResultValue((memory - secondOperand).toString());
+              setResultValue((memory - parseFloat(secondOperand)).toString());
               return;
             case '*':
-              setResultValue((memory * secondOperand).toString());
+              setResultValue((memory * parseFloat(secondOperand)).toString());
               return;
             case '/':
-              if (secondOperand === 0) {
+              if (parseFloat(secondOperand) === 0) {
                 clearState();
                 setResultValue('ERROR');
                 return;
               }
 
-              setResultValue((memory / secondOperand).toString());
+              setResultValue((memory / parseFloat(secondOperand)).toString());
               return;
           }
 
