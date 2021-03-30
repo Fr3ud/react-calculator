@@ -148,7 +148,16 @@ const App = () => {
         setEquals(true);
         return;
 
-      default:
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
         if (operator) {
           const displayValues = displayValue.split(' ');
           let secondOperand = getSecondOperand(
@@ -205,7 +214,11 @@ const App = () => {
               parseFloat(value + buttonValue).toString()
             );
           }
+          return;
         }
+      default:
+        console.log('Something went wrong...');
+        return;
     }
   };
 
