@@ -23,8 +23,36 @@ const App = () => {
         setEquals(false);
         return;
       case '%':
-        const percents = memory || 100;
-        setDisplayValue(displayValue / percents);
+        if (!memory) {
+          const percents = parseFloat(displayValue) / 100;
+          setDisplayValue(percents);
+          setResultValue(percents);
+          return;
+        }
+
+        const right = parseFloat(displayValue.split(' ').pop());
+        const percents = (memory / 100) * right;
+        let result = 0;
+
+        if (operator) {
+          switch (operator) {
+            case '+':
+              result = parseFloat(resultValue) - right + percents;
+              break;
+            case '-':
+              result = parseFloat(resultValue) + right - percents;
+              break;
+            case '*':
+              result = (parseFloat(resultValue) / right) * percents;
+              break;
+            case '/':
+              result = (parseFloat(resultValue) * right) / percents;
+              break;
+          }
+        }
+
+        setResultValue(result);
+        setDisplayValue(result);
         return;
       case '.':
         if (operator) {
