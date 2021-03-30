@@ -26,6 +26,17 @@ const App = () => {
         const percents = memory || 100;
         setDisplayValue(displayValue / percents);
         return;
+      case '.':
+        if (operator) {
+          const rightNum = displayValue.split(' ').pop();
+          if (rightNum.includes('.')) return;
+          setDisplayValue(displayValue + '.');
+          return;
+        }
+
+        if (displayValue.includes('.')) return;
+        setDisplayValue(displayValue + '.');
+        return;
       case '+':
         if (operator) {
           setOperator('+');
@@ -83,10 +94,27 @@ const App = () => {
         setResultValue('');
         setEquals(true);
         return;
+      // case '0':
+      //   if (displayValue.includes('.')) {
+      //     setDisplayValue(displayValue + buttonValue);
+      //   }
+      //
+      //   if (operator) {
+      //     setDisplayValue((displayValue) =>
+      //       parseFloat(displayValue + buttonValue).toString()
+      //     );
+      //   }
+
+      // return;
       default:
         if (operator) {
           const rightNum = `${displayValue}${buttonValue}`.split(' ').pop();
+
+          // console.log('right', rightNum);
+          // console.log('buttonValue', `${displayValue}${buttonValue}`);
+          // if (buttonValue === '.' && rightNum.includes('.')) return;
           setDisplayValue(`${displayValue}${buttonValue}`);
+          // console.log('ads');
 
           switch (operator) {
             case '+':
@@ -119,9 +147,13 @@ const App = () => {
             setEquals(false);
             return;
           }
-          setDisplayValue((displayValue) =>
-            parseFloat(displayValue + buttonValue).toString()
-          );
+          if (displayValue.includes('.') && buttonValue === '0') {
+            setDisplayValue(`${displayValue}${buttonValue}`);
+          } else {
+            setDisplayValue((displayValue) =>
+              parseFloat(displayValue + buttonValue).toString()
+            );
+          }
         }
     }
 
