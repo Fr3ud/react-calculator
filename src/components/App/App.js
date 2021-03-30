@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Display from '../Display';
 import Keyboard from '../Keyboard';
+import trimZeros from '../../utils/trimZeros';
 
 import './App.css';
 
@@ -158,13 +159,19 @@ const App = () => {
 
           switch (operator) {
             case '+':
-              setResultValue((memory + parseFloat(secondOperand)).toString());
+              setResultValue(
+                trimZeros(memory + parseFloat(secondOperand)).toString()
+              );
               return;
             case '-':
-              setResultValue((memory - parseFloat(secondOperand)).toString());
+              setResultValue(
+                trimZeros(memory - parseFloat(secondOperand)).toString()
+              );
               return;
             case '*':
-              setResultValue((memory * parseFloat(secondOperand)).toString());
+              setResultValue(
+                trimZeros(memory * parseFloat(secondOperand)).toString()
+              );
               return;
             case '/':
               if (parseFloat(secondOperand) === 0) {
@@ -173,7 +180,9 @@ const App = () => {
                 return;
               }
 
-              setResultValue((memory / parseFloat(secondOperand)).toString());
+              setResultValue(
+                trimZeros(memory / parseFloat(secondOperand)).toString()
+              );
               return;
           }
 
