@@ -22,6 +22,20 @@ const App = () => {
         setOperator(null);
         setEquals(false);
         return;
+      case '⌫':
+        if (operator) {
+          console.log('dv', displayValue);
+          const arr = displayValue.split(' ');
+          console.log(arr);
+          const newValue = arr.pop().slice(0, -1);
+          arr.push(newValue);
+          setDisplayValue(arr.join(' '));
+          setResultValue('');
+          return;
+        }
+
+        setDisplayValue((v) => v.slice(0, -1) || '0');
+        return;
       case '%':
         if (!memory) {
           const percents = parseFloat(displayValue) / 100;
