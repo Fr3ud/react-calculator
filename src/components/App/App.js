@@ -12,23 +12,41 @@ const App = () => {
   const [operator, setOperator] = useState(null);
   const [equals, setEquals] = useState(false);
 
+  const clearState = () => {
+    setDisplayValue('0');
+    setResultValue('');
+    setMemory(null);
+    setOperator(null);
+    setEquals(false);
+  };
+
+  const initOperator = (operator) => {
+    setMemory(parseFloat(displayValue));
+    setDisplayValue((value) => `${value} ${operator} `);
+    setOperator(operator);
+  };
+
+  const updateOperator = (operator) => {
+    setOperator(operator);
+    setMemory(parseFloat(resultValue));
+    setDisplayValue(`${resultValue} ${operator} `);
+    setResultValue('');
+  };
+
+  const getSecondOperand = (value) => value.split(' ').pop();
+
   const handleButtonClick = (buttonValue) => {
     switch (buttonValue) {
       case 'AC':
-        // null
-        setDisplayValue('0');
-        setResultValue('');
-        setMemory(null);
-        setOperator(null);
-        setEquals(false);
+        clearState();
         return;
+
       case '⌫':
         if (operator) {
-          console.log('dv', displayValue);
           const arr = displayValue.split(' ');
-          console.log(arr);
           const newValue = arr.pop().slice(0, -1);
           arr.push(newValue);
+
           setDisplayValue(arr.join(' '));
           setResultValue('');
           return;
@@ -36,6 +54,7 @@ const App = () => {
 
         setDisplayValue((v) => v.slice(0, -1) || '0');
         return;
+
       case '%':
         if (!memory) {
           const percents = parseFloat(displayValue) / 100;
@@ -44,23 +63,23 @@ const App = () => {
           return;
         }
 
-        const right = parseFloat(displayValue.split(' ').pop());
-        const percents = (memory / 100) * right;
+        const secondOperand = parseFloat(getSecondOperand(displayValue));
+        const percents = (memory / 100) * secondOperand;
         let result = 0;
 
         if (operator) {
           switch (operator) {
             case '+':
-              result = parseFloat(resultValue) - right + percents;
+              result = parseFloat(resultValue) - secondOperand + percents;
               break;
             case '-':
-              result = parseFloat(resultValue) + right - percents;
+              result = parseFloat(resultValue) + secondOperand - percents;
               break;
             case '*':
-              result = (parseFloat(resultValue) / right) * percents;
+              result = (parseFloat(resultValue) / secondOperand) * percents;
               break;
             case '/':
-              result = (parseFloat(resultValue) * right) / percents;
+              result = (parseFloat(resultValue) * secondOperand) / percents;
               break;
           }
         }
@@ -68,139 +87,113 @@ const App = () => {
         setResultValue(result);
         setDisplayValue(result);
         return;
+
       case '.':
         if (operator) {
-          const rightNum = displayValue.split(' ').pop();
-          if (rightNum.includes('.')) return;
-          setDisplayValue(displayValue + '.');
+          const secondOperand = getSecondOperand(displayValue);
+
+          if (secondOperand.includes('.')) return;
+          setDisplayValue((value) => value + '.');
           return;
         }
 
         if (displayValue.includes('.')) return;
-        setDisplayValue(displayValue + '.');
+        setDisplayValue((value) => value + '.');
         return;
+
       case '+':
         if (operator) {
-          setOperator('+');
-          setMemory(parseFloat(resultValue));
-          setDisplayValue(`${resultValue} + `);
-          setResultValue('');
+          updateOperator('+');
           return;
         }
-        setMemory(parseFloat(displayValue));
-        setDisplayValue(`${displayValue} + `);
-        setOperator('+');
+
+        initOperator('+');
         return;
+
       case '-':
         if (operator) {
-          setOperator('-');
-          setMemory(parseFloat(resultValue));
-          setDisplayValue(`${resultValue} - `);
-          setResultValue('');
+          updateOperator('-');
           return;
         }
-        setMemory(parseFloat(displayValue));
-        setDisplayValue(`${displayValue} - `);
-        setOperator('-');
+
+        initOperator('-');
         return;
+
       case '*':
         if (operator) {
-          setOperator('*');
-          setMemory(parseFloat(resultValue));
-          setDisplayValue(`${resultValue} * `);
-          setResultValue('');
+          updateOperator('*');
           return;
         }
-        setMemory(parseFloat(displayValue));
-        setDisplayValue(`${displayValue} * `);
-        setOperator('*');
+
+        initOperator('*');
         return;
+
       case '/':
         if (operator) {
-          setOperator('/');
-          setMemory(parseFloat(resultValue));
-          setDisplayValue(`${resultValue} / `);
-          setResultValue('');
+          updateOperator('/');
           return;
         }
-        setMemory(parseFloat(displayValue));
-        setDisplayValue(`${displayValue} / `);
-        setOperator('/');
+
+        initOperator('/');
         return;
+
       case '=':
         if (!operator) return;
 
-        setOperator(null);
-        setMemory(parseFloat(resultValue));
         setDisplayValue(resultValue);
+        setMemory(parseFloat(resultValue));
         setResultValue('');
+        setOperator(null);
         setEquals(true);
         return;
-      // case '0':
-      //   if (displayValue.includes('.')) {
-      //     setDisplayValue(displayValue + buttonValue);
-      //   }
-      //
-      //   if (operator) {
-      //     setDisplayValue((displayValue) =>
-      //       parseFloat(displayValue + buttonValue).toString()
-      //     );
-      //   }
 
-      // return;
       default:
         if (operator) {
-          const rightNum = `${displayValue}${buttonValue}`.split(' ').pop();
-
-          // console.log('right', rightNum);
-          // console.log('buttonValue', `${displayValue}${buttonValue}`);
-          // if (buttonValue === '.' && rightNum.includes('.')) return;
-          setDisplayValue(`${displayValue}${buttonValue}`);
-          // console.log('ads');
+          const values = displayValue.split(' ');
+          const secondOperand = parseFloat(
+            getSecondOperand(values.pop() + buttonValue)
+          );
+          values.push(secondOperand.toString());
+          setDisplayValue(values.join(' '));
 
           switch (operator) {
             case '+':
-              setResultValue((memory + parseFloat(rightNum)).toString());
+              setResultValue((memory + secondOperand).toString());
               return;
             case '-':
-              setResultValue((memory - parseFloat(rightNum)).toString());
+              setResultValue((memory - secondOperand).toString());
               return;
             case '*':
-              setResultValue((memory * parseFloat(rightNum)).toString());
+              setResultValue((memory * secondOperand).toString());
               return;
             case '/':
-              if (parseFloat(rightNum) === 0) {
-                setDisplayValue('ERROR'); // clear state
+              if (secondOperand === 0) {
+                clearState();
+                setResultValue('ERROR');
                 return;
               }
 
-              setResultValue((memory / parseFloat(rightNum)).toString());
+              setResultValue((memory / secondOperand).toString());
               return;
           }
 
           return;
         } else {
-          // null
           if (equals) {
-            setDisplayValue(buttonValue); // not zero
-            setResultValue('');
-            setMemory(null);
-            setOperator(null);
-            setEquals(false);
+            clearState();
+            setDisplayValue(buttonValue);
             return;
           }
+
           if (displayValue.includes('.') && buttonValue === '0') {
-            setDisplayValue(`${displayValue}${buttonValue}`);
+            setDisplayValue((value) => value + buttonValue);
           } else {
-            setDisplayValue((displayValue) =>
-              parseFloat(displayValue + buttonValue).toString()
+            setDisplayValue((value) =>
+              parseFloat(value + buttonValue).toString()
             );
           }
         }
     }
-
-    console.log('buttonValue', buttonValue);
-    console.log(displayValue);
   };
 
   return (
