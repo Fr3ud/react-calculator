@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Display from '../Display';
 import Keyboard from '../Keyboard';
@@ -13,6 +13,16 @@ const App = () => {
   const [memory, setMemory] = useState(null);
   const [operator, setOperator] = useState(null);
   const [equals, setEquals] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = ({ key }) => handleButtonClick(key);
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [displayValue, resultValue, memory, operator, equals]);
 
   const clearState = () => {
     setDisplayValue('0');
@@ -41,6 +51,7 @@ const App = () => {
         clearState();
         return;
 
+      case 'Backspace':
       case '⌫':
         if (operator) {
           const arr = displayValue.split(' ');
@@ -58,8 +69,9 @@ const App = () => {
       case '%':
         if (!memory) {
           const percents = parseFloat(displayValue) / 100;
-          setDisplayValue(percents);
-          setResultValue(percents);
+          setDisplayValue(percents.toString());
+          setResultValue(percents.toString());
+          setMemory(percents);
           return;
         }
 
@@ -216,7 +228,7 @@ const App = () => {
           return;
         }
       default:
-        console.log('Something went wrong...');
+        console.log('Something went wrong...', buttonValue);
         return;
     }
   };
