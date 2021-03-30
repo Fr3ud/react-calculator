@@ -151,10 +151,15 @@ const App = () => {
       default:
         if (operator) {
           const displayValues = displayValue.split(' ');
-          const secondOperand = getSecondOperand(
+          let secondOperand = getSecondOperand(
             displayValues.pop() + buttonValue
           );
-          displayValues.push(secondOperand.toString());
+
+          if (buttonValue === '0' && !secondOperand.includes('.')) {
+            secondOperand = parseFloat(secondOperand);
+          }
+
+          displayValues.push(secondOperand);
           setDisplayValue(displayValues.join(' '));
 
           switch (operator) {
@@ -185,7 +190,6 @@ const App = () => {
               );
               return;
           }
-
           return;
         } else {
           if (equals) {
